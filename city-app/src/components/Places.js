@@ -24,7 +24,8 @@ const styles = (theme) => ({
         margin: '10px',   
     },
 });
-class Places extends Component {
+
+export class Places extends Component {
     constructor(props) {
         super(props);
         this.state = { page: 0, 
@@ -42,23 +43,26 @@ class Places extends Component {
         this.setState({page: this.state.page+1})
     }
 
-    getPlaces = () => {
+    getPlaces = async () => {
         if (!this.state.loadedAll && !this.state.isLoading) {
             this.setState({isLoading: true})
-            axios.get(`/places`, {
-                params: {
-                    page: this.state.page
+            try {
+                const res = await axios.get(`/places`, {
+                    params: {
+                        page: this.state.page
+                    }
+                });
+                const places = res.data.data;
+                this.setState({ places: this.state.places.concat(places), isLoading: false });
+                if(places.length >= 10) {
+                    this.incrementPage()
+                } else {
+                    this.setState({loadedAll: true})
                 }
-            })
-            .then(res => {
-            const places = res.data.data;
-            this.setState({ places: this.state.places.concat(places), isLoading: false });
-            if(places.length >= 10) {
-                this.incrementPage()
-            } else {
-                this.setState({loadedAll: true})
+            } catch (err) {
+                this.setState({isLoading: false})
+                //TODO error handling
             }
-            })
         }
     }
 

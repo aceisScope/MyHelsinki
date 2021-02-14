@@ -24,16 +24,15 @@ app.get("/places", async (req, res, next) => {
         })
       .then(response => res.send(response.data))
       .catch(err => {
-        console.log(err);
-        res.status(500).send(err);
+        res.status(err.response.status).send(err);
     });
 });
 
-app.use(express.static(path.join(__dirname, 'city-app/build')));
+// app.use(express.static(path.join(__dirname, 'city-app/build')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/city-app/build', 'index.html'));
-});
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/city-app/build', 'index.html'));
+// });
 
 app.listen(port, () => {
   console.log(`City app listening at http://localhost:${port}`)
