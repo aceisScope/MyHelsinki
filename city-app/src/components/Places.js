@@ -78,6 +78,41 @@ export class Places extends Component {
         }
     }
 
+    getStreetAddress = (address) => {
+        return address.street_address + ", " + address.postal_code + ", " + address.locality
+    }
+
+    isPlaceOpen = (openingHours) => {
+        let isOpen = false
+        let date = new Date()
+        date.setSeconds(0)
+
+        let weekdayId = date.getDay();
+        if (weekdayId === 0) {
+            weekdayId = 7 // sunday is 0
+        }
+
+        if (openingHours) {
+            const openingHour = openingHours.find(hour => hour.weekday_id === weekdayId)
+            if (openingHour) {
+                let opens = openingHour.opens
+                let closes = openingHour.closes
+                if (opens && closes) {
+                    let opensHour = new Date()
+                    opensHour.setHours(opens.substring(0, 2), opens.substring(3, 5), 0)
+                    let closesHour = new Date()
+                    closesHour.setHours(closes.substring(0, 2), closes.substring(3, 5), 0)
+                    
+                    if (date > opensHour && date < closesHour) {
+                        isOpen = true
+                    }
+                } 
+            }
+        }
+    
+        return isOpen ? "OPEN" : "CLOSED"
+    }
+
     bottomButton = () => {
         if (!this.state.loadedAll) {
             return (
@@ -104,8 +139,8 @@ export class Places extends Component {
                     <GridListTile key={place.id}> 
                         {this.getImage(place.description)}
                         <GridListTileBar
-                        title={place.name.fi}
-                        subtitle={<span>{place.description.body}</span>}
+                        title={"["+this.isPlaceOpen(place.opening_hours.hours)+"] "+place.name.fi}
+                        subtitle={<span>{this.getStreetAddress(place.location.address)}</span>}
                         // actionIcon={
                         //     <IconButton aria-label={`info about ${place.name.fi}`} className={classes.icon}>
                         //     <InfoIcon />
