@@ -12,7 +12,7 @@ const port = process.env.PORT || 8080;
 
 app.get("/places", async (req, res, next) => {
     let limit = parseInt(req.query.limit || 10);
-    let page = parseInt(req.query.pagina || 0);
+    let page = parseInt(req.query.page || 0);
     let start = page * limit
 
     axios
