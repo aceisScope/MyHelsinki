@@ -17,5 +17,5 @@ npm run client-install
 npm run dev
 
 # run react unit tests
-cd city-app/ && npm test
+cd city-app/ && yarn test
 ```
