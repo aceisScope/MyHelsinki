@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router } from "react-router-dom";
 import PlacesRenderer from "./PlacesRenderer";
+import Alert from '@material-ui/lab/Alert';
 export class Places extends Component {
     constructor(props) {
         super(props);
         this.state = { page: 0, 
                     places:[],
                     isLoading: false,
+                    isError: false,
                     loadedAll: false
                  };
     }
@@ -22,7 +24,7 @@ export class Places extends Component {
 
     getPlaces = async () => {
         if (!this.state.loadedAll && !this.state.isLoading) {
-            this.setState({isLoading: true})
+            this.setState({isLoading: true, isError: false})
             try {
                 const res = await axios.get(`/places`, {
                     params: {
@@ -37,15 +39,24 @@ export class Places extends Component {
                     this.setState({loadedAll: true})
                 }
             } catch (err) {
-                this.setState({isLoading: false})
-                //TODO error handling
+                this.setState({isLoading: false, isError: true})
             }
         }
+    }
+
+    disPlayErrorBanner= () => {
+        if (this.state.isError) {
+            console.log("display banner");
+            return (
+                <Alert severity="error" onClose={() => {this.setState({isError: false})}}>Something is wrong, please try again!</Alert>
+            )
+        } 
     }
 
     render() {
         return (
           <Router>
+            {this.disPlayErrorBanner()}
             <PlacesRenderer places={this.state.places} isLoading={this.state.isLoading} loadedAll={this.state.loadedAll} loadMore={()=>this.getPlaces()}/>
           </Router>
         );
