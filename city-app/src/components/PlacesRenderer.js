@@ -46,7 +46,7 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
         if (isPlaceOpen(place) === OpenStatus.unknown) {
             return place.name.fi
         } else {
-            return "["+isPlaceOpen(place)+"] "+place.name.fi
+            return `[${isPlaceOpen(place)}] ${place.name.fi}` 
         }
     }
 
@@ -72,6 +72,12 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
         }
     }
 
+    const openPlaceUrl = (place) => {
+        if (place.info_url) {
+            window.open(place.info_url)
+        }
+    }
+
     return (
         <Container>
             <GridList cellHeight={180} className={classes.gridList}>
@@ -79,11 +85,7 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
                 <ListSubheader component="div"><h1>Places</h1></ListSubheader>
                 </GridListTile>
                 {places.map((place) => (
-                <GridListTile key={place.id} onClick={ (e) => {
-                    if (place.info_url) {
-                        window.open(place.info_url)
-                    }
-                  }}> 
+                <GridListTile key={place.id} onClick={() => {openPlaceUrl(place)}}> 
                     {getImage(place.description)}
                     <GridListTileBar
                     title={getTitle(place)}

@@ -22,11 +22,11 @@ export class Places extends Component {
         this.setState({page: this.state.page+1})
     }
 
-    getPlaces = async () => {
+    async getPlaces() {
         if (!this.state.loadedAll && !this.state.isLoading) {
             this.setState({isLoading: true, isError: false})
             try {
-                const res = await axios.get(`/places`, {
+                const res = await axios.get(`/api/places`, {
                     params: {
                         page: this.state.page
                     }
@@ -44,18 +44,16 @@ export class Places extends Component {
         }
     }
 
-    disPlayErrorBanner= () => {
-        if (this.state.isError) {
-            return (
-                <Alert severity="error" onClose={() => {this.setState({isError: false})}}>Something is wrong, please try again!</Alert>
-            )
-        } 
+    displayErrorBanner() {
+        return (
+            <Alert severity="error" onClose={() => {this.setState({isError: false})}}>Something is wrong, please try again!</Alert>
+        )
     }
 
     render() {
         return (
           <Router>
-            {this.disPlayErrorBanner()}
+            {this.state.isError && this.displayErrorBanner()}
             <PlacesRenderer places={this.state.places} isLoading={this.state.isLoading} loadedAll={this.state.loadedAll} loadMore={()=>this.getPlaces()}/>
           </Router>
         );

@@ -4,7 +4,7 @@ import { OpenStatus, isOpeningHour } from '../helper/DateUtils';
 describe('DateUtils', () => {
     let weekdayId = (new Date()).getDay()
 
-    describe('current time is between opening hours', () => {
+    describe('opening hours is missing', () => {
         let openingHours = [{weekday_id: weekdayId+1}]
     
         it('opening status is unknown', () => {

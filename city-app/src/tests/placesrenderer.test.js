@@ -2,7 +2,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { PlacesRenderer } from '../components/PlacesRenderer';
 import Button from '@material-ui/core/Button';
-import { jssPreset } from '@material-ui/core';
 
 describe('PlacesRenderer', () => {
     let wrapper;
@@ -37,17 +36,13 @@ describe('PlacesRenderer', () => {
         wrapper = shallow(<PlacesRenderer {...props}/>);
     })
 
-    describe('when image url is missing', () => {
-        it('getImage returns default image url', () => {
-            expect(wrapper.findWhere(node => node.key() === '123').find("img").prop("src")).toEqual(defaultURL);
-        });
-    })
+    it("shows default image for places that don't have an image", () => {
+        expect(wrapper.findWhere(node => node.key() === '123').find("img").prop("src")).toEqual(defaultURL);
+    });
 
-    describe('when image url is present', () => {
-        it('getImage returns default image url', () => {
-            expect(wrapper.findWhere(node => node.key() === '456').find("img").prop("src")).toEqual(imageURL);
-        });
-    })
+    it('shows the place image for places that have an image', () => {
+        expect(wrapper.findWhere(node => node.key() === '456').find("img").prop("src")).toEqual(imageURL);
+    });
 
     describe('when load more button is clicked', () => {
         it('click event from props should be triggered', () => {

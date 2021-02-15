@@ -21,12 +21,9 @@ describe('Places', () => {
     });
 
     describe('when component mounts', () => {
-        beforeEach(() => {
+        it('calls getPlaces', () => {
             jest.spyOn(instance, 'getPlaces');
             instance.componentDidMount();
-        });
-
-        it('calls getPlaces', () => {
             expect(instance.getPlaces).toHaveBeenCalledTimes(1);
         });
     });
@@ -44,8 +41,8 @@ describe('Places', () => {
             expect(wrapper.state('isLoading')).toEqual(false);
         })
 
-        it('places data is saved to state', () => {
-            expect(wrapper.state('places')).toEqual(places);
+        it('places data is passed to placerenderer', () => {
+            expect(wrapper.find(PlacesRenderer).props().places).toEqual(places);
         })
     })
 
