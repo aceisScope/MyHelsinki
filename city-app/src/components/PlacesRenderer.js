@@ -42,6 +42,14 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
         return address.street_address + ", " + address.postal_code + ", " + address.locality
     }
 
+    const getTitle = (place) => {
+        if (isPlaceOpen(place) == OpenStatus.unknown) {
+            return place.name.fi
+        } else {
+            return "["+isPlaceOpen(place)+"] "+place.name.fi
+        }
+    }
+
     const isPlaceOpen = (place) => {
         if (!place.opening_hours || !place.opening_hours.hours) {
             return OpenStatus.unknown
@@ -71,10 +79,14 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
                 <ListSubheader component="div"><h1>Places</h1></ListSubheader>
                 </GridListTile>
                 {places.map((place) => (
-                <GridListTile key={place.id}> 
+                <GridListTile key={place.id} onClick={ (e) => {
+                    if (place.info_url) {
+                        window.open(place.info_url)
+                    }
+                  }}> 
                     {getImage(place.description)}
                     <GridListTileBar
-                    title={"["+isPlaceOpen(place)+"] "+place.name.fi}
+                    title={getTitle(place)}
                     subtitle={<span>{getStreetAddress(place.location.address)}</span>}
                     // actionIcon={
                     //     <IconButton aria-label={`info about ${place.name.fi}`} className={classes.icon}>

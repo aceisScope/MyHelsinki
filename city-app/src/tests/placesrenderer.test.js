@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { PlacesRenderer } from '../components/PlacesRenderer';
-import GridListTile from '@material-ui/core/GridListTile';
+import Button from '@material-ui/core/Button';
+import { jssPreset } from '@material-ui/core';
 
 describe('PlacesRenderer', () => {
     let wrapper;
@@ -29,7 +30,7 @@ describe('PlacesRenderer', () => {
             }],
         isLoading: false,
         loadedAll: false,
-        loadMore: ()=>{}
+        loadMore: () => {}
     }
 
     beforeAll(() => {
@@ -47,4 +48,13 @@ describe('PlacesRenderer', () => {
             expect(wrapper.findWhere(node => node.key() === '456').find("img").prop("src")).toEqual(imageURL);
         });
     })
+
+    describe('when load more button is clicked', () => {
+        it('click event from props should be triggered', () => {
+            const clickMock = jest.fn();
+            wrapper.setProps({ loadMore: clickMock });
+            wrapper.find(Button).simulate('click');
+            expect(clickMock).toHaveBeenCalledTimes(1);
+        });
+      });
 })

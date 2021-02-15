@@ -59,10 +59,6 @@ describe('Places', () => {
             expect(wrapper.state('isLoading')).toEqual(false);
         })
 
-        it('places data is saved to state', () => {
-            expect(wrapper.state('isError')).toEqual(true);
-        })
-
         it('failure banner is displayed', () => {
             expect(wrapper.find(Alert)).toHaveLength(1);
         })
