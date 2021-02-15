@@ -46,7 +46,6 @@ export class Places extends Component {
 
     disPlayErrorBanner= () => {
         if (this.state.isError) {
-            console.log("display banner");
             return (
                 <Alert severity="error" onClose={() => {this.setState({isError: false})}}>Something is wrong, please try again!</Alert>
             )

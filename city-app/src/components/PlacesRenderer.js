@@ -6,6 +6,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Button from '@material-ui/core/Button';
 import { Container } from '@material-ui/core';
+import { OpenStatus, isOpeningHour } from '../helper/DateUtils';
 
 const styles = (theme) => ({
     root: {
@@ -43,38 +44,12 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
 
     const isPlaceOpen = (place) => {
         if (!place.opening_hours || !place.opening_hours.hours) {
-            return "CLOSED"
+            return OpenStatus.unknown
         }
 
-        const openingHours = place.opening_hours.hours
-        let isOpen = false
         let date = new Date()
-        date.setSeconds(0)
-
         let weekdayId = date.getDay();
-        if (weekdayId === 0) {
-            weekdayId = 7 // sunday is 0
-        }
-
-        if (openingHours) {
-            const openingHour = openingHours.find(hour => hour.weekday_id === weekdayId)
-            if (openingHour) {
-                let opens = openingHour.opens
-                let closes = openingHour.closes
-                if (opens && closes) {
-                    let opensHour = new Date()
-                    opensHour.setHours(opens.substring(0, 2), opens.substring(3, 5), 0)
-                    let closesHour = new Date()
-                    closesHour.setHours(closes.substring(0, 2), closes.substring(3, 5), 0)
-                    
-                    if (date > opensHour && date < closesHour) {
-                        isOpen = true
-                    }
-                } 
-            }
-        }
-    
-        return isOpen ? "OPEN" : "CLOSED"
+        return isOpeningHour(place.opening_hours.hours, weekdayId)
     }
 
     const bottomButton = () => {
