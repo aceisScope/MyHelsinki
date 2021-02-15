@@ -43,7 +43,7 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
     }
 
     const getTitle = (place) => {
-        if (isPlaceOpen(place) == OpenStatus.unknown) {
+        if (isPlaceOpen(place) === OpenStatus.unknown) {
             return place.name.fi
         } else {
             return "["+isPlaceOpen(place)+"] "+place.name.fi
@@ -88,11 +88,6 @@ export function PlacesRenderer({classes, places, isLoading, loadedAll, loadMore}
                     <GridListTileBar
                     title={getTitle(place)}
                     subtitle={<span>{getStreetAddress(place.location.address)}</span>}
-                    // actionIcon={
-                    //     <IconButton aria-label={`info about ${place.name.fi}`} className={classes.icon}>
-                    //     <InfoIcon />
-                    //     </IconButton>
-                    // }
                     />
                 </GridListTile>
                 ))}

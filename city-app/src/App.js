@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import { BrowserRouter as Router } from "react-router-dom";
 import Navibar from './components/Navibar';
 import Places from './components/Places';
